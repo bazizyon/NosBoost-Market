@@ -1,26 +1,19 @@
-# NosBoost ModKit
+# Bazaar Filter
 
-This repo is the starting point for making one mod for NosTale that runs on NosBoost.
+A NosBoost mod that helps you find the right items in the NosBazaar.
 
-NosBoost is a small system that runs inside the game. It can load extra DLL files ("mods") while the game is running. Fork this repo to make your own mod.
+A filter panel sits next to the bazaar window. You say which stats you want and the mod marks the listings that have them, so you don't have to open every item.
 
-## What is inside
+## What it does
 
-- `ModContract.h` — this is the toolbox. It has all the functions and types a mod is allowed to use, like creating a widget on screen or reading a packet from the server.
-- `ExampleMod/` — an example mod that already builds and runs. It shows how to use the tools in `ModContract.h`. You can rename it, change it, or replace it with your own code.
+- Weapons and armour: pick up to 4 groups of stats. A group can need all of its stats, a number of them, or a total value. Each stat can have a minimum.
+- Specialist cards: filter by upgrade, level, attack, defence, element, HP/MP, PvE, PvP and resistance points, and show each card's perfection right in the list.
+- Partner cards: filter by the rank of each skill (F to S) and by upgrade, and show the ranks right in the list.
+- Matching listings can be tinted, the others dimmed, and their buy button hidden.
+- The window title shows how many listings on the page match.
 
-## How to make your mod
+The Filter button under "Search criteria" turns everything on and off.
 
-1. Use this repository as template.
-2. Open it in CLion (or any CMake-based IDE) and build it. You do not need to download anything else by hand. The build automatically fetches the SDK and ImGui for you.
-3. Rename the `ExampleMod` folder and its `.cpp` file to your mod's name. Open the top-level `CMakeLists.txt` and change every place it says `ExampleMod` to your new name (the file names, the `add_library` name, and the target name in `target_include_directories` / `target_compile_options` / `set_target_properties`).
-4. Open your mod's `.cpp` file and write your own code. Use the tools from `ModContract.h` to make widgets (buttons, labels, panels) or to read packets sent by the server.
-5. Build your mod or push a version with a tag in form v* (v0.1 for example). It compiles into a DLL and is placed straight into the game's `mods` folder or in GitHub releases. The next time NosBoost starts, it finds your DLL and loads it automatically.
+## Install
 
-## What the SDK is for
-
-While you write your mod, you will use class and packet definitions that come from the SDK repo (`NosSDK_-NosBoost-`). You do not need to set this up yourself — the build fetches it for you. It gives you things like the exact shape of a widget or a packet, so your mod can read and change them safely.
-
-## A note for later
-
-If a mod is not working, first check that the DLL is really in the game's `mods` folder, and that NosBoost's overlay shows your mod's name in its list. Most problems are caused by a stale build being copied instead of a fresh one.
+Download the DLL from this repo's Releases and put it in the game's `mods` folder. NosBoost loads it by itself. Open it from the NosBoost mods menu (F9).
