@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "ModContract.h"
+#include "Features.h"
 #include "WidgetKit.h"
 #include "TLBSWidget.h"
 #include "TEWLabel.h"
@@ -189,7 +190,7 @@ namespace {
         char Path[MAX_PATH];
         GetModuleFileNameA(nullptr, Path, MAX_PATH);
         const std::string Dir(Path);
-        return Dir.substr(0, Dir.find_last_of("\\/") + 1) + "mods\\BazaarFilter.ini";
+        return Dir.substr(0, Dir.find_last_of("\\/") + 1) + "mods\\Market\\BazaarFilter.ini";
     }
 
     void LoadSettings() {
@@ -1083,24 +1084,15 @@ namespace {
     }
 }
 
-extern "C" {
-    __declspec(dllexport) const ModClassRequirement* ModGetRequirements(size_t* OutCount) {
-        *OutCount = std::size(Requirements);
-        return Requirements;
-    }
-
-    __declspec(dllexport) void ModStartup(ImGuiContext* Context, const ImGuiMemAllocFunc AllocFunc,
-                                          const ImGuiMemFreeFunc FreeFunc, void* AllocUserData,
-                                          const ModHost* Host) {
-        ImGui::SetCurrentContext(Context);
-        ImGui::SetAllocatorFunctions(AllocFunc, FreeFunc, AllocUserData);
+namespace BazaarFilter {
+    void Startup(const ModHost* Host) {
         CachedHost = Host;
         LoadSettings();
         ItemIcons::ByVnum();
         Packet::SubscribePacket(Host, &OnSearchResults);
     }
 
-    __declspec(dllexport) void ModShutdown() {
+    void Shutdown() {
         ClearRowLooks();
         HideCardRows();
         for (int i = 0; i < ResultsPerPage; i++) {
@@ -1119,8 +1111,7 @@ extern "C" {
         CachedHost = nullptr;
     }
 
-    __declspec(dllexport) void ModEarlyTick(const TLBSWidget* RootWidget, const TickContext tickContext) {
-        TLBSWidget* Root = const_cast<TLBSWidget*>(RootWidget);
+    void EarlyTick(TLBSWidget* Root, const TickContext tickContext) {
         if (!CachedHost || !Root || !Root->childrenList) return;
         if (!tickContext.isPlayerLoaded) {
             Show(Window, false);
@@ -1191,9 +1182,7 @@ extern "C" {
         UpdateCardRows();
     }
 
-    __declspec(dllexport) void ModTick(const TLBSWidget*, TickContext) {}
-
-    __declspec(dllexport) void ModToggleMainWindow() {
-        ToggleFilter();
+    bool* EnabledFlag() {
+        return &Config.Enabled;
     }
 }

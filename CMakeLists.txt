@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(BazaarFilter)
+project(Market)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,12 +20,25 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-add_library(BazaarFilter SHARED
+add_library(Market SHARED
+        Market/Market.cpp
         BazaarFilter/BazaarFilter.cpp
         BazaarFilter/CardFilter.cpp
         BazaarFilter/ItemIcons.cpp
         BazaarFilter/ShellAttributes.cpp
         BazaarFilter/ShellFilter.cpp
+        CharacterValue/CharacterValue.cpp
+        CharacterValue/BazaarLog.cpp
+        CharacterValue/EventText.cpp
+        CharacterValue/GameCall.cpp
+        CharacterValue/HoverHint.cpp
+        CharacterValue/InventoryOverlay.cpp
+        CharacterValue/ItemCatalog.cpp
+        CharacterValue/ItemEditor.cpp
+        CharacterValue/Memory.cpp
+        CharacterValue/Paths.cpp
+        CharacterValue/SearchHotkey.cpp
+        CharacterValue/ValueRules.cpp
         WidgetKit/WidgetKit.cpp
         WidgetKit/Dropdown.cpp
         ${imgui_SOURCE_DIR}/imgui.cpp
@@ -34,9 +47,11 @@ add_library(BazaarFilter SHARED
         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
 )
 
-target_include_directories(BazaarFilter PRIVATE
+target_include_directories(Market PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/WidgetKit
+        ${CMAKE_CURRENT_SOURCE_DIR}/Market
+        ${CMAKE_CURRENT_SOURCE_DIR}/CharacterValue
         ${nosboost_sdk_SOURCE_DIR}/classes
         ${nosboost_sdk_SOURCE_DIR}/classes/enums
         ${nosboost_sdk_SOURCE_DIR}/classes/structs
@@ -45,10 +60,10 @@ target_include_directories(BazaarFilter PRIVATE
         ${imgui_SOURCE_DIR}
 )
 
-target_compile_options(BazaarFilter PRIVATE /EHsc /MP)
+target_compile_options(Market PRIVATE /EHsc /MP)
 
 if(NOT DEFINED ENV{CI})
-    set_target_properties(BazaarFilter PROPERTIES
+    set_target_properties(Market PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "C:/Program Files (x86)/Nostale/mods"
     )
 endif()
