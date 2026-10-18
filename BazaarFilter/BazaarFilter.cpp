@@ -1113,6 +1113,8 @@ namespace BazaarFilter {
 
     void EarlyTick(TLBSWidget* Root, const TickContext tickContext) {
         if (!CachedHost || !Root || !Root->childrenList) return;
+        static WidgetKit::WindowRaiser Raiser;
+        Raiser.Tick(Window, tickContext);
         if (!tickContext.isPlayerLoaded) {
             Show(Window, false);
             return;

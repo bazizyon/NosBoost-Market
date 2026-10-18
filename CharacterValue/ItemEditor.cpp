@@ -708,6 +708,8 @@ namespace ItemEditor {
 
     void EarlyTick(TLBSWidget* Root, const TickContext& Context) {
         if (!Host || !Root || !Root->childrenList) return;
+        static WidgetKit::WindowRaiser Raiser;
+        Raiser.Tick(Window, Context);
         if (!Context.isPlayerLoaded) {
             Show(Window, false);
             return;
