@@ -562,6 +562,7 @@ namespace ItemEditor {
             const WidgetKit::WindowDesc Desc{WidgetKit::WindowStyle::Plain, 240, 100, WindowWidth,
                                              static_cast<uint16_t>(WindowHeight + PageShift), L"Market", true};
             Window = WidgetKit::CreateGameWindow(Host, Desc);
+            WidgetKit::CloseOnEscape(Host, Window);
             if (!Window) return;
             Window->isVisible = false;
             Window->isRestrictedToScreen = true;
